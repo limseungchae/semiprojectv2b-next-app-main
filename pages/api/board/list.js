@@ -10,7 +10,7 @@ const dbconfig = {
 export default async (req, res) => {
     let conn;
     const sql = ' select bno, title, userid, date_format(regdate, "%Y-%m-%d") regdate, ' +
-        ' views from board order by bno desc limit 0, 25 ';
+                ' views from board order by bno desc limit 0, 25 ';
     try {
         conn = await mariadb.createConnection(dbconfig);
 
@@ -23,3 +23,11 @@ export default async (req, res) => {
         if (conn) await conn.close();
     }
 }
+
+
+
+
+
+
+
+
