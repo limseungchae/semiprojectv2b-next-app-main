@@ -7,8 +7,6 @@ export default async (req, res) => {
 
     let stnum = (cpg - 1) * 25 + 1;
 
-
-
     try {
         const rowData =  new Board().select(stnum, ftype, fkey)
                           .then((result) => result);
@@ -18,11 +16,3 @@ export default async (req, res) => {
         res.status(500).json(err);
     }
 }
-
-
-
-
-
-
-
-
