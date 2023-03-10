@@ -1,3 +1,6 @@
+import {useState} from "react";
+import fetch from 'isomorphic-unfetch';
+import axios from 'axios';
 
 const getStpgns = (cpg, alpg) => {
     let stpgns = [];
@@ -29,11 +32,18 @@ export async function getServerSideProps(ctx) {
     let [ cpg, ftype, fkey ] = [ ctx.query.cpg, ctx.query.ftype, ctx.query.fkey ];
 
     cpg = cpg ? parseInt(cpg) : 1;
+
     let params = `cpg=${cpg}`;          // 질의문자열 생성
+    //if (fkey) params += `&ftype=${ftype}&fkey=${encodeURIComponent(fkey)}`;
+    if (fkey) params += `&ftype=${ftype}&fkey=${fkey}`;     // axios
+
     let url = `http://localhost:3000/api/board/list?${params}`;
 
-    const res = await fetch(url);
-    const boards = await res.json();
+    //const res = await fetch(url);             // isomorphic-unfetch
+    //const boards = await res.json();
+
+    const res = await axios.get(url);           // axios
+    const boards = await res.data;
 
     let alpg = Math.ceil(parseInt(boards.allcnt) / 25);  // 총 페이지수 계산
 
@@ -43,14 +53,27 @@ export async function getServerSideProps(ctx) {
     // 페이지네이션 처리 2
     let pgn = getPgns(cpg, alpg);
 
+    // 검색시 검색관련 질의문자열 생성
+    let qry = fkey ? `&ftype=${ftype}&fkey=${fkey}` : '';
+
     // 처리 결과를 boards 객체에 추가
     boards.stpgns = stpgns;
     boards.pgn = pgn;
+    boards.qry = qry;
 
     return { props : {boards} }
 }
 
 export default function List( {boards} ) {
+    const [ftype, setFtype] = useState('title');
+    const [fkey, setFkey] = useState(undefined);
+
+    const handletype = (e) => { setFtype(e.target.value); };
+    const handlekey = (e) => { setFkey(e.target.value); };
+    const handlefind = (e) => {
+        if (fkey) location.href = `?ftype=${ftype}&fkey=${fkey}`;
+    };
+
     return (
         <main>
             <h2>게시판</h2>
@@ -64,9 +87,17 @@ export default function List( {boards} ) {
                 </colgroup>
                 <tbody>
                 <tr>
-                    <td colSpan="5" className="alignrgt">
-                        <button type="button">새글쓰기</button>
+                    <td colSpan="3" className="alignlft">
+                        <select name="ftype" id="ftype" onChange={handletype}>
+                            <option value="title">제 목</option>
+                            <option value="userid">작성자</option>
+                            <option value="contents">본 문</option>
+                        </select>
+                        <input type="text" name="fkey" id="fkey" onChange={handlekey} />
+                        <button type="button" id="findbtn" onClick={handlefind}>검색하기</button>
                     </td>
+                    <td colspan="2" className="alignrgt">
+                        <button type="button" id="newbtn">새글쓰기</button></td>
                 </tr>
                 <tr>
                     <th>번호</th>
@@ -91,22 +122,22 @@ export default function List( {boards} ) {
 
             <ul className="pagenation">
                 {boards.pgn.isprev ?
-                    <li> <a href={`?cpg=${boards.pgn.prev}`}>이전</a> </li> : ''}
+                    <li> <a href={`?cpg=${boards.pgn.prev}${boards.qry}`}>이전</a> </li> : ''}
 
                 {boards.pgn.isprev10 ?
-                    <li> <a href={`?cpg=${boards.pgn.prev10}`}>이전10</a> </li> : ''}
+                    <li> <a href={`?cpg=${boards.pgn.prev10}${boards.qry}`}>이전10</a> </li> : ''}
 
                 {boards.stpgns.map(pgn => (
                     pgn.iscpg ?
                         <li key={pgn.num} className='cpage'>{pgn.num}</li> :
-                        <li key={pgn.num}><a href={`?cpg=${pgn.num}`}>{pgn.num}</a></li>
+                        <li key={pgn.num}><a href={`?cpg=${pgn.num}${boards.qry}`}>{pgn.num}</a></li>
                 ))}
 
                 {boards.pgn.isnext10 ?
-                    <li> <a href={`?cpg=${boards.pgn.next10}`}>다음10</a> </li> : ''}
+                    <li> <a href={`?cpg=${boards.pgn.next10}${boards.qry}`}>다음10</a> </li> : ''}
 
                 {boards.pgn.isnext ?
-                    <li> <a href={`?cpg=${boards.pgn.next}`}>다음</a> </li> : ''}
+                    <li> <a href={`?cpg=${boards.pgn.next}${boards.qry}`}>다음</a> </li> : ''}
             </ul>
         </main>
     )
