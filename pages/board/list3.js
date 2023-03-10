@@ -111,7 +111,7 @@ export default function List( {boards} ) {
                 {boards.boards.map(bd => (
                     <tr key={bd.bno}>
                         <td>{bd.bno}</td>
-                        <td><Link href={`/board/view?bbn=${bd.bno}`}>{bd.title}</Link></td>
+                        <td><Link href={`/board/view?bno=${bd.bno}`}>{bd.title}</Link></td>
                         <td>{bd.userid}</td>
                         <td>{bd.regdate}</td>
                         <td>{bd.views}</td>

@@ -61,3 +61,13 @@ button { padding: 5px 7px }
 
 .logo { padding: 50px 110px ; width: 75% }
 
+/* 게시판 본문보기 */
+#view { width: 700px; margin: 0 auto; }
+#view label { display: inline-block; width: 110px;
+    text-align: right; font-weight: bold;
+    margin-right: 10px }
+#view #contents { border: 1px solid #eeeeee;
+    display: inline-block;
+    width: 560px; min-height: 350px;
+    white-space: pre }
+

@@ -13,15 +13,13 @@ export async function getServerSideProps(ctx) {
 
 export default function View({board}) {
 
-    const newOne = () =>{ location.href = '/board/write'; };
-    const go2list = () =>{ location.href = '/board/list'; };
-
-    const updateOne = () =>{ location.href = `/board/update?bno=${board.bno}`; };
-
-    const deleteOne = () =>{
-        if(confirm('정말 삭제하시겠습니까?'))
-        location.href = `/board/delete?bno=${board.bno}`; };
-
+    const newOne = () => { location.href = '/board/write'; };
+    const go2list = () => { location.href = '/board/list'; };
+    const updateOne = () => { location.href = `/board/update?bno=${board.bno}`; };
+    const deleteOne = () => {
+        if (confirm('정말 삭제하시겠습니까?'))
+            location.href = `/board/delete?bno=${board.bno}`;
+    };
 
     return (
         <main>
@@ -44,11 +42,11 @@ export default function View({board}) {
                 <input type="hidden" id="uid" value={board.userid} />
 
                 <div><label></label>
-                    <button type="button" onclick={newOne}>새글쓰기</button>
-                    <button type="button" onclick={go2list}>목록으로</button>
+                    <button type="button" onClick={newOne}>새글쓰기</button>
+                    <button type="button" onClick={go2list}>목록으로</button>
 
-                    <button type="button" onclick={updateOne}>수정하기</button>
-                    <button type="button" onclick={deleteOne}>삭제하기</button>
+                    <button type="button" onClick={updateOne}>수정하기</button>
+                    <button type="button" onClick={deleteOne}>삭제하기</button>
                 </div>
             </div>
 
