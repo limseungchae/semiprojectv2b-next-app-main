@@ -1,26 +1,21 @@
-import mariadb from 'mariadb';
+import Board from '/models/Board';
 
-const dbconfig = {
-    host: process.env.MARIADB_HOST,
-    user: process.env.MARIADB_USER,
-    password: process.env.MARIADB_PWD,
-    database: process.env.MARIADB_DB
-};
 
 export default async (req, res) => {
-    let conn;
-    const sql = ' select bno, title, userid, date_format(regdate, "%Y-%m-%d") regdate, ' +
-                ' views from board order by bno desc limit 0, 25 ';
-    try {
-        conn = await mariadb.createConnection(dbconfig);
+    let [ cpg, ftype, fkey ] = [ req.query.cpg, req.query.ftype, req.query.fkey ];
+    console.log(ftype, fkey);
 
-        const rowData = await conn.query(sql);
-        res.status(200).json(rowData);
+    let stnum = (cpg - 1) * 25 + 1;
+
+
+
+    try {
+        const rowData =  new Board().select(stnum, ftype, fkey)
+                          .then((result) => result);
+        res.status(200).json(await rowData);
     } catch (err) {
         console.log(err);
         res.status(500).json(err);
-    } finally {
-        if (conn) await conn.close();
     }
 }
 
