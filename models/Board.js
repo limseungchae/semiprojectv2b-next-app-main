@@ -1,23 +1,23 @@
-const mariadb = require('../models/Mariadb');
+import mariadb from './MariaDB';
 const ppg = 25;
 
 let boardsql = {
-    insert: ' insert into board (bno, title, userid, contents) values (?, ?, ?) ',
+    insert: ' insert into board (title, userid, contents) values (?, ?, ?)',
     select: ' select bno, title, userid, date_format(regdate, "%Y-%m-%d") regdate, ' +
-            ' views from board order by bno desc limit 0, 25 ',
+        ' views from board order by bno desc limit 0, 25 ',
 
     select1: ' select bno, title, userid, date_format(regdate, "%Y-%m-%d") regdate, ' +
-             ' views from board ',
-    select2: ' order by bno desc limit 0, 25 ',
+        ' views from board ',
+    select2: ' order by bno desc limit ?, 25 ',
 
-    selectOne: ' select * from board wwhere bno = ? ',
+    selectOne: ' select * from board where bno = ? ',
 
-    selectCount: 'select count(bno) cnt from board ',
+    selectCount: 'select count(bno) cnt from board',
 
     viewOne: ' update board set views = views + 1 where bno = ? ',
 
-    update: ' update board set title = :1, contents = ?, ' +
-            'regdate = current_timestamp where bno = :? ',
+    update: ' update board set title = ?, contents = ?, ' +
+        ' regdate = current_timestamp where bno = ? ',
 
     delete: ' delete from board where bno = ? ',
 }
@@ -63,9 +63,9 @@ class Board {
     async select(stnum, ftype, fkey) {  // 게시판 목록 출력
         let conn = null;
         let params = [stnum, stnum + ppg];
-        let [ allcnt , idx ] = [-1, -1];
+        let [allcnt, idx] = [-1, -1];
         let where = '';
-        let rowData = '';   // 결과 저장용
+        let rowData = '';     // 결과 저장용
 
         if (fkey !== undefined) where = makeWhere(ftype, fkey);
 
@@ -76,13 +76,12 @@ class Board {
 
             rowData = await conn.query(
                 boardsql.select1 + where + boardsql.select2, params);
-
         } catch (e) {
             console.log(e);
         } finally {
             await mariadb.closeConn();
         }
-        let result = {'boards': rowData, 'allcnt': allcnt, 'idx':idx};
+        let result = {'boards': rowData, 'allcnt': allcnt, 'idx': idx};
 
         return result;
     }
@@ -92,7 +91,7 @@ class Board {
         let cnt = -1;   // 결과 저장용
 
         try {
-            cnt = await conn.query( boardsql.selectCount + where, params);
+            cnt = await conn.query(boardsql.selectCount + where, params);
         } catch (e) {
             console.log(e);
         }
@@ -103,20 +102,11 @@ class Board {
     async selectOne(bno) {  // 본문조회
         let conn = null;
         let params = [bno];
-        let bds = [];
+        let result = '';
 
         try {
             conn = await mariadb.makeConn();
-            let result = await conn.query(
-                boardsql.selectOne, params, mariadb.options);
-            let rs = result.resultSet;
-
-            let row = null;
-            while((row = await rs.getRow())) {
-                let bd = new Board(row.BNO, row.TITLE, row.USERID,
-                    row.REGDATE2, row.CONTENTS, row.VIEWS);
-                bds.push(bd);
-            }
+            result = await conn.query(boardsql.selectOne, params);
 
             await conn.query(boardsql.viewOne, params);
             await conn.commit();
@@ -127,7 +117,7 @@ class Board {
             await mariadb.closeConn();
         }
 
-        return bds;
+        return result;
     }
 
     async update() {
