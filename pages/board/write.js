@@ -37,7 +37,6 @@ export default function Write() {
         }
     };
 
-
     const handleTitle = (e) => { setTitle(e.target.value); };
     const handleContents = (e) => { setContents(e.target.value); };
 
@@ -49,7 +48,7 @@ export default function Write() {
                 <form name="write" id="writefrm">
                     <div><label htmlFor="title">제목</label>
                         <input type="text" name="title" id="title"
-                            onChange={handleTitle}/></div>
+                               onChange={handleTitle} /></div>
 
                     <div><label htmlFor="uid">작성자</label>
                         <input type="text" name="uid" id="uid"
@@ -58,8 +57,9 @@ export default function Write() {
                     <div><label htmlFor="contents" className="drgup">본문</label>
                         <textarea name="contents" id="contents" onChange={handleContents}
                                   rows="7" cols="55"></textarea></div>
+
                     <div><label></label>
-                        <div className="g-recaptcha cap" data-sitekey='6LdS4OskAAAAANKM33dcjgpTPELf6QKmHoPhBWGR'></div>
+                        <div className="g-recaptcha cap" data-sitekey="6LdG4OskAAAAAMgMFOSHk_hTcglHx9m1Z9qBuR6y"></div>
                     </div>
 
                     <div><label></label>
