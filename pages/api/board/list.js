@@ -3,9 +3,8 @@ import Board from '/models/Board';
 
 export default async (req, res) => {
     let [ cpg, ftype, fkey ] = [ req.query.cpg, req.query.ftype, req.query.fkey ];
-    console.log(ftype, fkey);
-
-    let stnum = (cpg - 1) * 25 + 1;
+    let stnum = (cpg - 1) * 25;  // 지정한 페이지 범위 시작값 계산
+    // oracle : (cpg - 1) * 25 + 1
 
     try {
         const rowData =  new Board().select(stnum, ftype, fkey)
