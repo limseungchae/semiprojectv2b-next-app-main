@@ -1,6 +1,6 @@
 import {useState} from "react";
 import axios from "axios";
-import { check_captcha } from "../../models/Utils";
+import { check_captcha, process_submit, handleInput } from "../../models/Utils";
 
 export async function getServerSideProps(ctx) {
     let bno = ctx.query.bno;
@@ -12,16 +12,6 @@ export async function getServerSideProps(ctx) {
     return { props: {board} }
 }
 
-const process_update = async (data) => {
-    const cnt = fetch('/api/board/update', {
-        method: 'post', mode: 'cors',
-        body: JSON.stringify(data),
-        headers: {"Content-Type": "application/json"},
-    }).then(async res => res.json());
-
-    return await cnt;
-};
-
 export default function Update({board}) {
 
     const [title, setTitle] = useState(board.title);
@@ -30,17 +20,13 @@ export default function Update({board}) {
 
     const handleupdate = async () => {
         if (grecaptcha.getResponse()
-            && check_captcha(grecaptcha.getResponse())) {
+            && await check_captcha(grecaptcha.getResponse())) {
             let data = {bno: board.bno, title: title, contents: contents};
-            if ((await process_update(data)).cnt > 0)
+            if ((await process_submit('/api/board/update', data)).cnt > 0)
                 location.href = '/board/view?bno=' + board.bno;
         } else {
             alert('!!!');
         }
-    };
-
-    const handleInput = (setInput, e) => {
-        setInput(e.target.value);
     };
 
     return (
@@ -61,7 +47,7 @@ export default function Update({board}) {
                     <div><label htmlFor="contents" className="drgup">본문</label>
                         <textarea name="contents" id="contents"
                                   onChange={e => handleInput(setContents, e)}
-                                  rows="7" cols="55">{contents}</textarea></div>
+                                  rows="7" cols="55" value={contents} /></div>
 
                     <div><label></label>
                         <div className="g-recaptcha cap" data-sitekey="6LdG4OskAAAAAMgMFOSHk_hTcglHx9m1Z9qBuR6y"></div>
