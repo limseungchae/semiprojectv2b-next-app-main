@@ -23,7 +23,7 @@ export default function Join() {
 
     return (
         <main>
-            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+            <script src="https://www.google.com/recaptcha/api.js?render=explcit" async defer></script>
             <h2>회원가입</h2>
             <form name="join">
                 <div><label htmlFor="uid">아이디</label>
@@ -43,7 +43,8 @@ export default function Join() {
                            onChange={e => handleInput(setEmail, e)}/></div>
 
                 <div><label></label>
-                    <div className="g-recaptcha cap" data-sitekey="6LdG4OskAAAAAMgMFOSHk_hTcglHx9m1Z9qBuR6y"></div>
+                    <div className="g-recaptcha cap"
+                         data-sitekey='6LdS4OskAAAAANKM33dcjgpTPELf6QKmHoPhBWGR'></div>
                 </div>
 
                 <div><label></label>
