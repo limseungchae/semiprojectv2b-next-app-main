@@ -1,4 +1,4 @@
-import {check_captcha, handleInput, process_submit} from "../../models/Utils";
+import {check_captcha, handleInput, hashPassword, process_submit} from "../../models/Utils";
 import {useState} from "react";
 
 
@@ -15,7 +15,9 @@ export default function Join() {
     const handlejoin = async () => {
         if (grecaptcha.getResponse() && await check_captcha(grecaptcha.getResponse())) {
             // 회원가입 작업 진행
-            const data = {userid: userid, passwd: passwd, name: name, email: email};
+
+            let hshpwd = await hashPassword(passwd); // 암호를 해시화 함
+            const data = {userid: userid, passwd: hshpwd, name: name, email: email};
             if (await process_submit('/api/member/join', data) > 0) {
                 location.href = '/member/login';
             }

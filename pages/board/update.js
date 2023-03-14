@@ -22,7 +22,7 @@ export default function Update({board}) {
         if (grecaptcha.getResponse()
             && await check_captcha(grecaptcha.getResponse())) {
             let data = {bno: board.bno, title: title, contents: contents};
-            if ((await process_submit('/api/board/update', data)).cnt > 0)
+            if (await process_submit('/api/board/update', data) > 0)
                 location.href = '/board/view?bno=' + board.bno;
         } else {
             alert('!!!');
@@ -50,7 +50,7 @@ export default function Update({board}) {
                                   rows="7" cols="55" value={contents} /></div>
 
                     <div><label></label>
-                        <div className="g-recaptcha cap" data-sitekey="6LdG4OskAAAAAMgMFOSHk_hTcglHx9m1Z9qBuR6y"></div>
+                        <div className="g-recaptcha cap" data-sitekey="6LdS4OskAAAAANKM33dcjgpTPELf6QKmHoPhBWGR"></div>
                     </div>
 
                     <div><label></label>

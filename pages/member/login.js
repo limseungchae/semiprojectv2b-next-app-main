@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {handleInput, process_submit} from "../../models/Utils";
+import {handleInput} from "../../models/Utils";
 import axios from "axios";
 
 export default function Login() {
