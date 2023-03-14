@@ -8,21 +8,38 @@ import Credentials from "next-auth/providers/credentials";
 export default NextAuth({
     providers: [
         Credentials({
-            name: 'email-passwd-credentials',
+            name: 'userid-passwd-credentials',
             credentials: {
-                email: { label: "이메일", type: "email" },
+                userid: { label: "아이디", type: "text" },
                 passwd: {  label: "비밀번호", type: "password" }
             }, // 로그인 폼 정의
             async authorize(credentials, req) {
                 // 입력한 인증 정보 가져옴
-                const email = credentials.email;
+                const userid = credentials.userid;
                 const passwd = credentials.passwd;
 
                 // 인증에 성공해야만 로그인 허용
-                if (email === 'abc123@987xyz.com' & passwd === '987xyz') {
+                if (userid === 'abc123' && passwd === '987xyz') {
                     return credentials;
                 }
             }
         })
-    ]
+    ],
+    callbacks: {
+        // token, user, account, profile, isNewUser
+        async jwt(token, user, account, profile, isNewUser) {
+           console.log('jwt - ', user);
+           if (user?.userid) token.userid = user.userid;
+
+           return token;
+        },
+
+        // session, userOrToken
+        async session(session, userOrToken) {
+            console.log('session -', userOrToken);
+            session.user.userid = userOrToken.userid;
+
+            return session;
+        }
+    }
 });

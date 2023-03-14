@@ -8,7 +8,7 @@ const Login = () => {
     if (session) {
         return (
             <>
-                <h3>{session.user.email} 계정으로 로그인하였습니다</h3>
+                <h3>{session.user.userid} 계정으로 로그인하였습니다</h3>
                 <button onClick={() => signOut()}>로그아웃하기</button>
             </>
         );
