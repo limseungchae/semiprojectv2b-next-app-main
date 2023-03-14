@@ -10,9 +10,10 @@ export default function Join() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
 
+    console.log(process.env.SITE_KEY);
+
     const handlejoin = async () => {
-        if (grecaptcha.getResponse()
-            && await check_captcha(grecaptcha.getResponse())) {
+        if (grecaptcha.getResponse() && await check_captcha(grecaptcha.getResponse())) {
             // 회원가입 작업 진행
             const data = {userid: userid, passwd: passwd, name: name, email: email};
             if (await process_submit('/api/member/join', data) > 0) {
@@ -23,7 +24,7 @@ export default function Join() {
 
     return (
         <main>
-            <script src="https://www.google.com/recaptcha/api.js?render=explcit" async defer></script>
+            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
             <h2>회원가입</h2>
             <form name="join">
                 <div><label htmlFor="uid">아이디</label>

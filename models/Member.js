@@ -3,7 +3,7 @@ const mariadb = require('../models/MariaDB');
 let membersql = {
     insertsql : ' insert into member (userid,passwd,name,email) ' +
         ' values (?,?,?,?) ',
-    loginsql : ' select count(userid) cnt from member ' +
+    loginsql : ' select count(userid) cnt, name, email from member ' +
         ' where userid = ? and passwd = ? ',
     selectOne: ' select mno, userid, name, email, ' +
         ` date_format(regdate, "%Y-%m-%d %H:%i:%s") regdate ` +
