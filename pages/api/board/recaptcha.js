@@ -4,11 +4,11 @@ export default async (req, res) => {
     let params = '?secret=' + process.env.SECRET_KEY;
     params += '&response=' + req.query.response;
 
-    let url = 'https:/http://localhost:63342/recaptcha/api/siteverify';
+    let url = 'https://www.google.com/recaptcha/api/siteverify';
     url = url + params;
 
     const data = axios.get(url).then(data => data.data);
     console.log(await data);
 
-    res.status(200).json((await data).success);
+    res.status(200).json((await data));
 }
