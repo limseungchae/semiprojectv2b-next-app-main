@@ -1,9 +1,12 @@
 import {useState} from "react";
 import {handleInput} from "../../models/Utils";
-import axios from "axios";
-import {signIn} from "next-auth/client";
+import {signIn, useSession} from "next-auth/client";
+
 
 export default function Login() {
+
+    const [session, loading] = useSession();
+    console.log('login - ', session?.user?.userid);
 
     const [userid, setUserid] = useState('');
     const [passwd, setPasswd] = useState('');
