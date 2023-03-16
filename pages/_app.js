@@ -1,5 +1,5 @@
 import '../styles/globals.css'
-import Layout from "./layout/Layout";
+import Layout from "../.idea/components/layout/Layout";
 import App from "next/app";
 import {getSession} from "next-auth/client";
 
