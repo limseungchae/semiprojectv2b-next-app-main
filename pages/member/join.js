@@ -1,4 +1,4 @@
-import {check_captcha, handleInput, hashPassword, process_submit} from "../../.idea/components/Utils";
+import {check_captcha, handleInput, hashPassword, process_submit} from "../../components/Utils";
 import {useState} from "react";
 import {getSession} from "next-auth/client";
 

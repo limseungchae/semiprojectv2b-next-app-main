@@ -1,6 +1,6 @@
 import {useState} from "react";
 import axios from "axios";
-import { check_captcha, handleInput, process_submit } from '../../.idea/components/Utils'
+import { check_captcha, handleInput, process_submit } from '../../components/Utils'
 
 export default function Write() {
 
