@@ -2,6 +2,7 @@ import {useState} from "react";
 import fetch from 'isomorphic-unfetch';
 import axios from 'axios';
 import Link from "next/link";
+import Layout from "../../components/layout/Layout";
 
 const getStpgns = (cpg, alpg) => {
     let stpgns = [];
@@ -147,3 +148,10 @@ export default function List( {boards} ) {
         </main>
     )
 }
+
+
+List.getLayout = (page) => (
+    <Layout meta={{title: '게시판정보'}}>
+        {page}
+    </Layout>
+);

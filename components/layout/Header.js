@@ -22,7 +22,8 @@ const Header = ({menu}) => {
                     <li><a href="/member/join">회원가입</a></li>
 
                     {/* 문자열을 html 태그로 출력 - dangerouslySetInnerHTML */}
-                    <li dangerouslySetInnerHTML={{ __html: menu }}></li>
+                    {/*<li dangerouslySetInnerHTML={{ __html: menu }}></li>*/}
+                    <li><a href="/member/login">로그인</a></li>
 
                     <li><Link href="/board/list">게시판</Link></li>
                     <li><Link href="/member/myinfo">회원정보</Link></li>
