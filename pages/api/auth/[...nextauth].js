@@ -4,6 +4,7 @@
 
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import axios from "axios";
 
 export default NextAuth({
     providers: [
@@ -19,8 +20,17 @@ export default NextAuth({
                 const userid = credentials.userid;
                 const passwd = credentials.passwd;
 
+                // 인증확인
+                let params = `?userid=${userid}&passwd=${passwd}` ;
+                let url = `http://localhost:3000/api/member/login${params}`;
+                const res = await axios.get(url);
+                const result = await res.data;
+
+                console.log('nextauth -',await result);
+
                 // 인증에 성공해야만 로그인 허용
-                if (userid === 'abc123' && passwd === '987xyz') {
+                // if (userid === 'abc123' && passwd === '987xyz') {
+                if (await result.cnt > 0) {
                     return credentials;
                 }
             }
