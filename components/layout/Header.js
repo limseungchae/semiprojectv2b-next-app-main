@@ -3,17 +3,15 @@ import {getSession} from "next-auth/client";
 
 // component에는 getServerSideProps 사용불가!!
 // export async function getServerSideProps(ctx) {
-//
 //     // 세션 객체 가져오기
 //     const sess = await getSession(ctx);
-//     console.log('header1 -', sess);
+//     console.log('header1 - ', sess);
 //
-//     return {props : {sess}}
+//     return {props: {sess}}
 // }
 
-
 const Header = ({menu}) => {
-    console.log('header2 -', menu);
+    console.log('header2 - ', menu);
 
     return (
         <>
