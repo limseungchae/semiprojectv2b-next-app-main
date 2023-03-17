@@ -4,8 +4,8 @@ import Head from "next/head";
 
 // localhost:3000/member/join
 
-const Layout = ({children, menu, meta}) => {
-    console.log('layout -', menu);
+const Layout = ({children, meta}) => {
+    console.log('layout -', children.props.menu);
 
     const {title, description, icon} = meta;
     return (
@@ -18,7 +18,7 @@ const Layout = ({children, menu, meta}) => {
                 <link rel="icon" href={icon || '/favicon.ico'} />
             </Head>
             <div id="wrapper">
-                <Header menu={menu}/>
+                <Header menu={children.props.menu}/>
                 {children}
                 <Footer />
             </div>

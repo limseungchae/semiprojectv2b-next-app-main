@@ -65,7 +65,7 @@ export default function Join() {
 
                 <div><label></label>
                     <div className="g-recaptcha cap"
-                         data-sitekey='6LdS4OskAAAAANKM33dcjgpTPELf6QKmHoPhBWGR'></div>
+                         data-sitekey={process.env.SITE_KEY}></div>
                 </div>
 
                 <div><label></label>
